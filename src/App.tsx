@@ -28,10 +28,10 @@ import styled from '@emotion/styled';
 const { Header, Content, Footer } = Layout;
 
 const Logo = styled.img`
-    width: 44px;
+    width: 54px;
     height: auto;
     float: left;
-    margin: 10px 0;
+    margin: 5px 0;
 `;
 
 function App() {
@@ -43,10 +43,11 @@ function App() {
     });
     const { data } = useSWR(getQueryByDate(date as Moment, userId), Axios.get);
     const [auth, setAuth] = useLocalStorage<any>('auth_hawkins_app');
-    const [isLogging, setIsLogging] = useState(true);
+    const [isLogging, setIsLogging] = useState(false);
 
     useEffect(() => {
         if (auth) {
+            setIsLogging(true);
             const { login, password } = auth as any;
             Axios.post('/api/login', { login, password })
                 .then((res) => {
