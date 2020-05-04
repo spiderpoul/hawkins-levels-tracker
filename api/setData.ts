@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-const data = [];
+const data:any = [];
 
 export default (_req: NowRequest, res: NowResponse) => {
   const {body} = _req;
