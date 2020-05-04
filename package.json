@@ -1,32 +1,30 @@
 {
-  "name": "create-react-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.19.2",
-    "faunadb": "^2.13.1",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "react-scripts": "2.1.1"
-  },
-  "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "@now/node": "1.5.1"
-  },
-  {
+    "name": "create-react-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "axios": "^0.19.2",
+        "faunadb": "^2.13.1",
+        "react": "^16.6.1",
+        "react-dom": "^16.6.1",
+        "react-scripts": "2.1.1"
+    },
+    "scripts": {
+        "dev": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "devDependencies": {
+        "@now/node": "1.5.1"
+    },
     "env": {
-      : "fnADq_dyTeACAPwD73RudwYCl7LHyq099qcgIemf"
-    }
-  }
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+        "FAUNADB_SECRET_KEY": "fnADq_dyTeACAPwD73RudwYCl7LHyq099qcgIemf"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
 }
