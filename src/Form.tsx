@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { LEVELS_TYPES } from './models';
 import { LEVELS_VALUES } from './constants';
-import { getQueryByDate } from './utils';
+import { getQueryByDate, schedulePushNotification } from './utils';
 
 export function FormComponent() {
     const [level, setLevel] = useState(LEVELS_TYPES.Peace);
@@ -51,6 +51,7 @@ export function FormComponent() {
                             time: moment().format(),
                         });
                         revalidate();
+                        schedulePushNotification();
                     }}
                     type="primary"
                 >
