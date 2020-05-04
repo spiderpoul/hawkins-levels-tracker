@@ -2,12 +2,25 @@
     "name": "create-react-app",
     "version": "0.1.0",
     "private": true,
-    "dependencies": {
+    "dependencies": {              
+        "eslint-config-airbnb": "18.0.1",
+        "eslint-config-prettier": "6.10.0",
+        "eslint-import-resolver-webpack": "0.12.0",
+        "eslint-plugin-import": "2.19.1",
+        "eslint-plugin-jsx-a11y": "6.2.3",
+        "eslint-plugin-prettier": "3.1.2",
+        "eslint-plugin-react": "7.17.0",
+        "node-sass": "^4.13.1",
         "axios": "^0.19.2",
         "faunadb": "^2.13.1",
         "react": "^16.6.1",
         "react-dom": "^16.6.1",
-        "react-scripts": "2.1.1"
+        "react-scripts": "2.1.1",
+        "typescript": "^3.8.3",
+        "tslint": "^6.0.0",
+        "tslint-config-airbnb": "5.11.2",
+        "tslint-react": "4.2.0",
+        "tslint-react-hooks": "^2.2.2"
     },
     "scripts": {
         "dev": "react-scripts start",

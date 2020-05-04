@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Axios from 'axios'
 import {useState } from 'react';
-import './App.css';
-import { useEffect } from 'react/cjs/react.production.min';
+import './App.scss';
 
 function App() {
   const [level, setLevel] = useState(null); 

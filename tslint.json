@@ -1,0 +1,43 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint-config-airbnb",
+        "tslint-react",
+        "prettier",
+        "prettier/react",
+        "plugin:prettier/recommended",
+        "tslint-react-hooks"
+    ],
+    "jsRules": {},
+    "rules": {
+        "align": [true, "parameters", "statements"],
+        "trailing-comma": false,
+        "ter-indent": false,
+        "max-line-length": [true, 180],
+        "interface-name": false,
+        "variable-name": [false],
+        "ordered-imports": false,
+        "eofline": false,
+        "member-access": false,
+        "no-trailing-whitespace": false,
+        "jsx-no-multiline-js": false,
+        "jsx-no-lambda": false,
+        "jsx-no-bind": false,
+        "member-ordering": false,
+        "object-literal-sort-keys": false,
+        "ter-arrow-parens": false,
+        "no-unused-expression": false,
+        "array-type": false,
+        "no-object-literal-type-assertion": false,
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+        "object-literal-shorthand": false,
+        "import-name": false,
+        "jsx-boolean-value": false,
+        "no-implicit-dependencies": false,
+        "no-else-after-return": false,
+        "quotemark": false,
+        "jsx-alignment": false,
+        "prettier/prettier": ["error"]
+    },
+    "rulesDirectory": []
+}
