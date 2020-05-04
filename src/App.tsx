@@ -35,7 +35,7 @@ function App() {
             <Content>
                 <div className="site-layout-content">
                     <Typography.Title level={2}>
-                        Hawkins levels app
+                        Hawkins levels tracking app
                     </Typography.Title>
                     <FormComponent />
                     <Typography.Title level={3}>Statistics</Typography.Title>
