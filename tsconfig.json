@@ -9,7 +9,7 @@
       "dom",
       "esnext.asynciterable"
     ],
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,

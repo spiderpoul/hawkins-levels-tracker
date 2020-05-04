@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
     LineChart,
     Line,
@@ -23,7 +23,7 @@ export const Chart: React.FC<ChartProps> = ({ data }) => {
             <LineChart
                 data={data}
                 margin={{
-                    top: 5,                    
+                    top: 5,
                     bottom: 5,
                 }}
             >

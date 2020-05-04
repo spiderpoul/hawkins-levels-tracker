@@ -1,9 +1,11 @@
-import moment from "moment";
+import moment, { Moment } from 'moment';
 
-export const prepareData = (data) =>
-    data &&
-    data.map((item) => ({
-        date: moment(item.ts / 1000).format('HH:mm ddd'),
+export const prepareData = (data = []) =>
+    data.map((item: any) => ({
+        date: moment(item.data.time).format('HH:mm'),
         value: item.data.value,
         task: item.data.task,
     }));
+
+export const getQueryByDate = (date?: Moment) =>
+    '/api/db?date=' + (date || moment()).format('YYYY-MM-DD');

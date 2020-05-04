@@ -1,12 +1,13 @@
 import React from 'react';
-import { Layout, Menu, AutoComplete, Select, Button, Form } from 'antd';
+import { Layout, Menu, DatePicker, Space, Typography } from 'antd';
 import Axios from 'axios';
 import useSWR from 'swr';
-import { useState } from 'react';
-import { LEVELS_TYPES } from './models';
+import moment, { Moment } from 'moment';
+
 import { Chart } from './Chart';
-import { LEVELS_VALUES } from './constants';
-import { prepareData } from './utils';
+import { prepareData, getQueryByDate } from './utils';
+import { FormComponent } from './Form';
+import { Cards } from './Cards';
 
 import './App.scss';
 import 'antd/dist/antd.css';
@@ -14,9 +15,10 @@ import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 
 function App() {
-    const [level, setLevel] = useState(LEVELS_TYPES.Peace);
-    const [task, setTask] = useState('');
-    const { data, revalidate } = useSWR('/api/db', Axios.get);
+    const { data: date, mutate: mutateDate } = useSWR('date', {
+        initialData: moment(),
+    });
+    const { data } = useSWR(getQueryByDate(date as Moment), Axios.get);
 
     return (
         <Layout className="layout">
@@ -32,59 +34,25 @@ function App() {
             </Header>
             <Content>
                 <div className="site-layout-content">
-                    <Form style={{ marginLeft: 20 }}>
-                        <Form.Item>
-                            <Select
-                                value={LEVELS_TYPES[level]}
-                                onSelect={(v) => setLevel(v)}
-                                style={{ width: 200 }}
-                            >
-                                {Object.keys(LEVELS_TYPES).map((key) => (
-                                    <Select.Option
-                                        value={key}
-                                        key={key}
-                                    >
-                                        {LEVELS_TYPES[key]}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item>
-                            <AutoComplete
-                                value={task}
-                                onChange={(v) => setTask(v)}
-                                style={{ width: 200 }}
-                                options={[
-                                    { value: 'work' },
-                                    { value: 'eating' },
-                                    { value: 'walking' },
-                                ]}
-                                placeholder="What are you doing now?"
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Button
-                                onClick={async () => {
-                                    await Axios.post('/api/add', {
-                                        level,
-                                        task,
-                                    });
-                                    revalidate();
-                                }}
-                                type="primary"
-                            >
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                    <Typography.Title level={2}>
+                        Hawkins levels app
+                    </Typography.Title>
+                    <FormComponent />
+                    <Typography.Title level={3}>Statistics</Typography.Title>
+                    <Space style={{ marginLeft: 20, marginBottom: 24 }}>
+                        Select date:{' '}
+                        <DatePicker
+                            value={date}
+                            onChange={(v) => mutateDate(v as Moment)}
+                        />
+                    </Space>
                     <div style={{ width: '100%', height: 300 }}>
                         <Chart data={prepareData((data || {}).data)} />
                     </div>
+                    <Cards />
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©2018 Created by Ant UED
-            </Footer>
+            <Footer style={{ textAlign: 'center' }}>Pavel Uvarov App</Footer>
         </Layout>
     );
 }
