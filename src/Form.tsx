@@ -11,7 +11,8 @@ import { getQueryByDate, schedulePushNotification } from './utils';
 export function FormComponent() {
     const [level, setLevel] = useState(LEVELS_TYPES.Peace);
     const [task, setTask] = useState('');
-    const { revalidate } = useSWR(getQueryByDate(), Axios.get);
+    const { data: userId } = useSWR('userId');
+    const { revalidate } = useSWR(getQueryByDate(undefined, userId), Axios.get);
 
     return (
         <Form style={{ marginLeft: 20 }}>
@@ -49,6 +50,7 @@ export function FormComponent() {
                             task,
                             date: moment().format('YYYY-MM-DD'),
                             time: moment().format(),
+                            userId,
                         });
                         revalidate();
                         schedulePushNotification();

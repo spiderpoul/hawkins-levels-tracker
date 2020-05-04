@@ -7,8 +7,12 @@ export const prepareData = (data = []) =>
         task: item.data.task,
     }));
 
-export const getQueryByDate = (date?: Moment) =>
-    '/api/db?date=' + (date || moment()).format('YYYY-MM-DD');
+export const getQueryByDate = (date?: Moment, userId?: number | null) =>
+    userId
+        ? `/api/db?date=${(date || moment()).format(
+              'YYYY-MM-DD'
+          )}&userId=${userId}`
+        : null;
 
 export const schedulePushNotification = async () => {
     let { state } = await navigator.permissions.query({

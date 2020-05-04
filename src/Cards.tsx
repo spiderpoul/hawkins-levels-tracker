@@ -17,7 +17,11 @@ const CardsContainer = styled.div`
 
 export const Cards = () => {
     const { data: date } = useSWR('date');
-    const { data, isValidating } = useSWR(getQueryByDate(date), Axios.get);
+    const { data: userId } = useSWR('userId');
+    const { data, isValidating } = useSWR(
+        getQueryByDate(date, userId),
+        Axios.get
+    );
 
     const preparedData = data?.data?.map((item = {} as any) => ({
         date: moment(item?.ts / 1000).format('HH:mm DD MMM YYYY'),

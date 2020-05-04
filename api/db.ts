@@ -9,8 +9,9 @@ module.exports = async (req, res) => {
                     // make paginatable
                     q.Match(
                         // query index
-                        q.Index('levels_by_date'),
-                        req?.query?.date
+                        q.Index('levels_by_date_id'),
+                        req?.query?.date,
+                        req?.query?.userId
                     )
                 ),
                 (ref) => q.Get(ref) // lookup each result by its reference
