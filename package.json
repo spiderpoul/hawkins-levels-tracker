@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
+    "faunadb": "^2.13.1",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-scripts": "2.1.1"
@@ -17,6 +18,11 @@
   "devDependencies": {
     "@now/node": "1.5.1"
   },
+  {
+    "env": {
+      : "fnADq_dyTeACAPwD73RudwYCl7LHyq099qcgIemf"
+    }
+  }
   "browserslist": [
     ">0.2%",
     "not dead",
