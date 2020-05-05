@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
                 userId: dbs?.data?.id,
                 login: dbs?.data?.login,
             };
-            const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+            const token = jwt.sign({ user }, process.env.jwt_secret, {
                 expiresIn: '14d',
             });
             res.status(200).json({ ...user, token });

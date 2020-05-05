@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             login: dbs?.data?.login,
             name: dbs?.data?.name,
         };
-        const token = jwt.sign({ user }, process.env.JWT_SECRET);
+        const token = jwt.sign({ user }, process.env.jwt_secret);
         res.status(200).json({ ...user, token });
     } catch (e) {
         // something went wrong
