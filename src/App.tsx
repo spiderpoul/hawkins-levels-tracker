@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Layout,
     Menu,
@@ -9,21 +9,21 @@ import {
     Avatar,
     Dropdown,
 } from 'antd';
-import Axios from 'axios';
 import useSWR from 'swr';
 import moment, { Moment } from 'moment';
 
 import { Chart } from './Chart';
-import { prepareData, getQueryByDate } from './utils';
+import { prepareData } from './utils';
 import { FormComponent } from './Form';
 import { Cards } from './Cards';
 
 import './App.scss';
 import 'antd/dist/antd.css';
-import useLocalStorage from '@rehooks/local-storage';
 import { LoginForm } from './LoginForm';
 import logo from './img/logo.png';
 import styled from '@emotion/styled';
+import { useUser } from './hooks/useUser';
+import { useLevels } from './hooks/useLevels';
 
 const { Header, Content, Footer } = Layout;
 
@@ -42,45 +42,19 @@ function App() {
     const { data: date, mutate: mutateDate } = useSWR('date', {
         initialData: moment(),
     });
-    const { data: userId, mutate: setUserId } = useSWR('userId', {
-        initialData: null,
-    });
-    const { data } = useSWR(getQueryByDate(date as Moment, userId), Axios.get);
-    const [auth, setAuth] = useLocalStorage<any>('auth_hawkins_app');
-    const [isLogging, setIsLogging] = useState(false);
 
-    useEffect(() => {
-        if (auth) {
-            setIsLogging(true);
-            const { login, password } = auth as any;
-            Axios.post('/api/login', { login, password })
-                .then((res) => {
-                    if (res) {
-                        setUserId(res.data?.userId);
-                    }
-                })
-                .catch(() => {})
-                .finally(() => {
-                    setIsLogging(false);
-                });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { token, isAuthorizing, clearToken, user } = useUser();
+    const { data: levels, isLoading } = useLevels();
 
     return (
         <Layout className="layout">
             <Header>
                 <Logo src={logo} />
-                {auth && (
+                {token && (
                     <Dropdown
                         overlay={
                             <Menu>
-                                <Menu.Item
-                                    onClick={() => {
-                                        setAuth(null);
-                                        setUserId(null);
-                                    }}
-                                >
+                                <Menu.Item onClick={clearToken}>
                                     Logout
                                 </Menu.Item>
                             </Menu>
@@ -90,7 +64,7 @@ function App() {
                             size={44}
                             style={{ float: 'right', margin: '10px 0' }}
                         >
-                            <AvaText>{auth?.login[0].toUpperCase()}</AvaText>
+                            <AvaText>{user?.login[0].toUpperCase()}</AvaText>
                         </Avatar>
                     </Dropdown>
                 )}
@@ -100,14 +74,15 @@ function App() {
                     <Typography.Title level={2}>
                         Hawkins levels tracking app
                     </Typography.Title>
-                    {isLogging && <Skeleton active />}
-                    {!userId && !isLogging && <LoginForm />}
-                    {userId && (
+                    {isAuthorizing && <Skeleton active />}
+                    {!token && !isAuthorizing && <LoginForm />}
+                    {token && (
                         <>
                             <Typography.Paragraph>
-                                Hello {auth?.login}, how you are doing?
+                                Hello {user?.login}, how you are doing?
                             </Typography.Paragraph>
                             <FormComponent />
+
                             <Typography.Title level={3}>
                                 Statistics
                             </Typography.Title>
@@ -119,7 +94,11 @@ function App() {
                                 />
                             </Space>
                             <div style={{ width: '100%', height: 300 }}>
-                                <Chart data={prepareData((data || {}).data)} />
+                                {isLoading ? (
+                                    <Skeleton active />
+                                ) : (
+                                    <Chart data={prepareData(levels)} />
+                                )}
                             </div>
                             <Cards />
                         </>

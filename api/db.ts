@@ -1,7 +1,10 @@
-import { client, q } from './client';
+import { client, q, verifyToken } from './client';
 
 module.exports = async (req, res) => {
     try {
+        const {
+            user: { userId },
+        } = verifyToken(req.body?.token);
         const dbs: any = await client.query(
             q.Map(
                 // iterate each item in result
@@ -11,7 +14,7 @@ module.exports = async (req, res) => {
                         // query index
                         q.Index('levels_by_date_id'),
                         req?.query?.date,
-                        req?.query?.userId
+                        userId
                     )
                 ),
                 (ref) => q.Get(ref) // lookup each result by its reference

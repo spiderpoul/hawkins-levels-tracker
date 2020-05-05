@@ -3,7 +3,6 @@ import { Form, Input, Button, Checkbox, notification } from 'antd';
 import { writeStorage } from '@rehooks/local-storage';
 import Axios from 'axios';
 import styled from '@emotion/styled';
-import { mutate } from 'swr';
 
 const layout = {
     labelCol: { span: 8 },
@@ -26,7 +25,10 @@ export const LoginForm = () => {
         let res;
         try {
             if (!isNeedToSignUp) {
-                res = await Axios.post('/api/login', { login, password });
+                res = await Axios.post('/api/login', {
+                    login,
+                    password,
+                });
             } else {
                 res = await Axios.post('/api/createUser', {
                     login,
@@ -34,14 +36,13 @@ export const LoginForm = () => {
                 });
             }
 
-            mutate('userId', res.data?.userId);
-
-            writeStorage('auth_hawkins_app', { login, password });
+            writeStorage('auth_hawkins_app', res.data?.token);
+            console.log(res);
         } catch (e) {
             notification.error({
                 message: 'Authorization failed',
                 description:
-                    res?.data?.error ||
+                    e?.response?.data?.error ||
                     'Please try to use another login/password or register',
             });
         }

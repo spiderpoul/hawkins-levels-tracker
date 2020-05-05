@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { client, q } from './client';
 
 module.exports = async (req, res) => {
@@ -7,12 +8,16 @@ module.exports = async (req, res) => {
         );
 
         if (dbs && dbs?.data?.password === req?.body?.password) {
-            res.status(200).json({
+            const user = {
                 userId: dbs?.data?.id,
                 login: dbs?.data?.login,
+            };
+            const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+                expiresIn: '14d',
             });
+            res.status(200).json({ ...user, token });
         } else {
-            res.status(401).json({ error: 'Unauthorized' });
+            res.status(401).json({ error: 'User not found' });
         }
     } catch (e) {
         // something went wrong

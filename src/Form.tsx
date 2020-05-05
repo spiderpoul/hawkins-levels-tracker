@@ -1,59 +1,35 @@
 import React, { useState } from 'react';
-import { AutoComplete, Select, Button, Form } from 'antd';
-import Axios from 'axios';
-import useSWR from 'swr';
-import moment from 'moment';
+import { Button, Form } from 'antd';
 
 import { LEVELS_TYPES } from './models';
-import { LEVELS_VALUES } from './constants';
-import { getQueryByDate, schedulePushNotification } from './utils';
+import { schedulePushNotification, updateRecord } from './utils';
+import { useLevels } from './hooks/useLevels';
+import { useUser } from './hooks/useUser';
+import { SelectLevel } from './SelectLevel';
+import { SelectTask } from './SelectTask';
 
 export function FormComponent() {
     const [level, setLevel] = useState(LEVELS_TYPES.Peace);
     const [task, setTask] = useState('');
-    const { data: userId } = useSWR('userId');
-    const { revalidate } = useSWR(getQueryByDate(undefined, userId), Axios.get);
+    const { token } = useUser();
+    const { revalidate } = useLevels();
 
     return (
         <Form style={{ marginLeft: 20 }}>
             <Form.Item label="Select level">
-                <Select
-                    value={LEVELS_TYPES[level]}
-                    onSelect={(v) => setLevel(v)}
-                    style={{ width: 200 }}
-                >
-                    {Object.keys(LEVELS_TYPES).map((key) => (
-                        <Select.Option value={key} key={key}>
-                            {LEVELS_TYPES[key]}
-                        </Select.Option>
-                    ))}
-                </Select>
+                <SelectLevel level={level} setLevel={setLevel} />
             </Form.Item>
             <Form.Item label="What are you doing now?">
-                <AutoComplete
-                    value={task}
-                    onChange={(v) => setTask(v)}
-                    style={{ width: 200 }}
-                    options={[
-                        { value: 'work' },
-                        { value: 'eating' },
-                        { value: 'walking' },
-                        { value: 'resting' },
-                        { value: 'watching tv' },
-                        { value: 'reading' },
-                    ]}
-                    placeholder="What are you doing now?"
-                />
+                <SelectTask task={task} setTask={setTask} />
             </Form.Item>
             <Form.Item>
                 <Button
                     onClick={async () => {
-                        await Axios.post('/api/add', {
-                            value: LEVELS_VALUES[level],
+                        await updateRecord({
+                            level,
                             task,
-                            date: moment().format('YYYY-MM-DD'),
-                            time: moment().format(),
-                            userId,
+                            token,
+                            url: '/api/add',
                         });
                         revalidate();
                         schedulePushNotification();

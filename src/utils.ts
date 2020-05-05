@@ -1,18 +1,16 @@
 import moment, { Moment } from 'moment';
+import Axios from 'axios';
+import { LEVELS_VALUES } from './constants';
 
-export const prepareData = (data = []) =>
+export const prepareData = (data: any[] = []) =>
     data.map((item: any) => ({
         date: moment(item.data.time).format('HH:mm'),
         value: item.data.value,
         task: item.data.task,
     }));
 
-export const getQueryByDate = (date?: Moment, userId?: number | null) =>
-    userId
-        ? `/api/db?date=${(date || moment()).format(
-              'YYYY-MM-DD'
-          )}&userId=${userId}`
-        : null;
+export const getQueryByDate = (date?: Moment) =>
+    `/api/db?date=${(date || moment()).format('YYYY-MM-DD')}`;
 
 export const schedulePushNotification = async () => {
     let { state } = await navigator.permissions.query({
@@ -50,3 +48,14 @@ export const schedulePushNotification = async () => {
         });
     }
 };
+
+export const updateRecord = ({ url, token, level, task }) =>
+    Axios.post(url, {
+        level: {
+            value: LEVELS_VALUES[level],
+            task,
+            date: moment().format('YYYY-MM-DD'),
+            time: moment().format(),
+        },
+        token,
+    });

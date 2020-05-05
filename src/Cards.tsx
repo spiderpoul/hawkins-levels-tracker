@@ -1,12 +1,9 @@
 import React from 'react';
-import { Card, Dropdown, Menu, Skeleton } from 'antd';
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import useSWR from 'swr';
-import Axios from 'axios';
-import { LEVELS_VALUES } from './constants';
+import { Skeleton } from 'antd';
 import moment from 'moment';
 import styled from '@emotion/styled';
-import { getQueryByDate } from './utils';
+import { useLevels } from './hooks/useLevels';
+import { CardItem } from './Card';
 
 const CardsContainer = styled.div`
     display: flex;
@@ -16,49 +13,20 @@ const CardsContainer = styled.div`
 `;
 
 export const Cards = () => {
-    const { data: date } = useSWR('date');
-    const { data: userId } = useSWR('userId');
-    const { data, isValidating } = useSWR(
-        getQueryByDate(date, userId),
-        Axios.get
-    );
+    const { data, isLoading } = useLevels();
 
-    const preparedData = data?.data?.map((item = {} as any) => ({
-        date: moment(item?.ts / 1000).format('HH:mm DD MMM YYYY'),
+    const preparedData = data?.map((item = {} as any) => ({
+        date: moment(item.data.time).format('HH:mm DD MMM YYYY'),
         value: item.data?.value,
         task: item.data?.task,
+        id: item.ref['@ref']?.id,
     }));
 
     return (
         <CardsContainer>
-            {isValidating && <Skeleton loading={isValidating} avatar active />}
+            {isLoading && <Skeleton loading={isLoading} avatar active />}
             {preparedData?.map((item) => (
-                <Card
-                    style={{ marginBottom: 16 }}
-                    loading={isValidating}
-                    size="default"
-                    hoverable
-                    actions={[
-                        <EditOutlined key="edit" />,
-                        <Dropdown
-                            overlay={
-                                <Menu>
-                                    <Menu.Item>Delete</Menu.Item>
-                                </Menu>
-                            }
-                        >
-                            <EllipsisOutlined key="ellipsis" />
-                        </Dropdown>,
-                    ]}
-                >
-                    <Card.Meta
-                        title={item?.date}
-                        description={Object.keys(LEVELS_VALUES).find(
-                            (x) => LEVELS_VALUES[x] === item?.value
-                        )}
-                    />
-                    {item?.task}
-                </Card>
+                <CardItem key={item.id} item={item} />
             ))}
         </CardsContainer>
     );

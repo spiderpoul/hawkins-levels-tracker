@@ -19,6 +19,7 @@
         "eslint-plugin-prettier": "3.1.2",
         "eslint-plugin-react": "7.17.0",
         "faunadb": "^2.13.1",
+        "jsonwebtoken": "^8.5.1",
         "moment": "2.24.0",
         "node-sass": "^4.13.1",
         "prettier": "^2.0.5",
@@ -45,7 +46,8 @@
         "@typescript-eslint/parser": "^2.21.0"
     },
     "env": {
-        "FAUNADB_SECRET_KEY": "fnADq_dyTeACAPwD73RudwYCl7LHyq099qcgIemf"
+        "FAUNADB_SECRET_KEY": "@faunadb_secret_key",
+        "JWT_SECRET": "@jwt_secret"
     },
     "eslintConfig": {
         "extends": "react-app"

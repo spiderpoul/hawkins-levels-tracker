@@ -6,12 +6,13 @@ module.exports = async (req, res) => {
             user: { userId },
         } = verifyToken(req.body?.token);
         const dbs: any = await client.query(
-            q.Create(q.Ref(q.Collection('levels-data'), q.NewId()), {
-                data: { ...req.body.level, userId },
-            })
+            q.Get(q.Match(q.Index('find_user_by_id'), userId))
         );
-        // ok
-        res.status(200).json(dbs?.data);
+
+        res.status(200).json({
+            userId: dbs?.data?.id,
+            login: dbs?.data?.login,
+        });
     } catch (e) {
         // something went wrong
         res.status(500).json({ error: e.message });
