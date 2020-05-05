@@ -25,6 +25,7 @@ export const Chart: React.FC<ChartProps> = ({ data }) => {
                 margin={{
                     top: 5,
                     bottom: 5,
+                    left: 0,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />

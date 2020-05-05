@@ -88,7 +88,7 @@ export const CardItem = ({ item }) => {
             {!isEditMode ? (
                 <>{item?.task}</>
             ) : (
-                <Space style={{ marginTop: 16 }}>
+                <Space style={{ marginTop: 16 }} direction="vertical">
                     <SelectLevel level={level} setLevel={setLevel} />
                     <SelectTask setTask={setTask} task={task} />
                 </Space>
