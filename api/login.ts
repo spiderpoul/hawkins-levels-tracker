@@ -7,7 +7,10 @@ module.exports = async (req, res) => {
         );
 
         if (dbs && dbs?.data?.password === req?.body?.password) {
-            res.status(200).json({ userId: dbs?.data?.id });
+            res.status(200).json({
+                userId: dbs?.data?.id,
+                login: dbs?.data?.login,
+            });
         } else {
             res.status(401).json({ error: 'Unauthorized' });
         }

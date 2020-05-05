@@ -68,3 +68,7 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
 serviceWorkerScope.addEventListener('message', function skipWaiting(event) {
     if (event.data === 'skipWaiting') serviceWorkerScope.skipWaiting();
 });
+
+serviceWorkerScope.addEventListener('install', () => {
+    serviceWorkerScope.skipWaiting();
+});

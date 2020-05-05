@@ -23,8 +23,8 @@ export const LoginForm = () => {
     const [form] = Form.useForm();
 
     const onFinish: any = async ({ login, password }) => {
+        let res;
         try {
-            let res;
             if (!isNeedToSignUp) {
                 res = await Axios.post('/api/login', { login, password });
             } else {
@@ -41,6 +41,7 @@ export const LoginForm = () => {
             notification.error({
                 message: 'Authorization failed',
                 description:
+                    res?.data?.error ||
                     'Please try to use another login/password or register',
             });
         }

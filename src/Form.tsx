@@ -38,6 +38,9 @@ export function FormComponent() {
                         { value: 'work' },
                         { value: 'eating' },
                         { value: 'walking' },
+                        { value: 'resting' },
+                        { value: 'watching tv' },
+                        { value: 'reading' },
                     ]}
                     placeholder="What are you doing now?"
                 />

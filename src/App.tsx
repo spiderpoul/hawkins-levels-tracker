@@ -34,6 +34,10 @@ const Logo = styled.img`
     margin: 5px 0;
 `;
 
+const AvaText = styled.span`
+    font-weight: bold;
+`;
+
 function App() {
     const { data: date, mutate: mutateDate } = useSWR('date', {
         initialData: moment(),
@@ -86,7 +90,7 @@ function App() {
                             size={44}
                             style={{ float: 'right', margin: '10px 0' }}
                         >
-                            {auth?.login[0]}
+                            <AvaText>{auth?.login[0].toUpperCase()}</AvaText>
                         </Avatar>
                     </Dropdown>
                 )}
@@ -100,6 +104,9 @@ function App() {
                     {!userId && !isLogging && <LoginForm />}
                     {userId && (
                         <>
+                            <Typography.Paragraph>
+                                Hello {auth?.login}, how you are doing?
+                            </Typography.Paragraph>
                             <FormComponent />
                             <Typography.Title level={3}>
                                 Statistics

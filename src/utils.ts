@@ -38,12 +38,15 @@ export const schedulePushNotification = async () => {
         icon,
     });
 
-    registration?.showNotification(`Time to fill you level`, {
-        tag: Math.random().toString().substr(2),
-        body: `It will take a few seconds`,
-        showTrigger: new (window as any).TimestampTrigger(
-            Date.now() + 3600 * 1000
-        ),
-        icon,
-    });
+    if ('showTrigger' in Notification.prototype) {
+        const TimestampTrigger = (window as any).TimestampTrigger;
+        registration?.showNotification(`Time to fill you level`, {
+            tag: Math.random().toString().substr(2),
+            body: `It will take a few seconds`,
+            showTrigger:
+                TimestampTrigger &&
+                new TimestampTrigger(Date.now() + 3600 * 1000),
+            icon,
+        });
+    }
 };
