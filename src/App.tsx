@@ -13,7 +13,7 @@ import useSWR from 'swr';
 import moment, { Moment } from 'moment';
 
 import { Chart } from './Chart';
-import { prepareData } from './utils';
+import { prepareData, getInitials } from './utils';
 import { FormComponent } from './Form';
 import { Cards } from './Cards';
 
@@ -64,7 +64,7 @@ function App() {
                             size={44}
                             style={{ float: 'right', margin: '10px 0' }}
                         >
-                            <AvaText>{user?.login[0].toUpperCase()}</AvaText>
+                            <AvaText>{getInitials(user?.name || '')}</AvaText>
                         </Avatar>
                     </Dropdown>
                 )}
@@ -79,7 +79,7 @@ function App() {
                     {token && (
                         <>
                             <Typography.Paragraph>
-                                Hello {user?.login}, how you are doing?
+                                Hello {user?.name}, how you are doing?
                             </Typography.Paragraph>
                             <FormComponent />
 

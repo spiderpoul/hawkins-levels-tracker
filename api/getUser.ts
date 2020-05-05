@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
         res.status(200).json({
             userId: dbs?.data?.id,
             login: dbs?.data?.login,
+            name: dbs?.data?.name,
         });
     } catch (e) {
         // something went wrong

@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, notification } from 'antd';
 import { writeStorage } from '@rehooks/local-storage';
 import Axios from 'axios';
-import styled from '@emotion/styled';
+import { SignUpForm } from './SignUpForm';
 
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
 };
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
 
-const CreateAcc = styled.span`
-    color: blue;
-    cursor: hover;
-`;
+const tailFormItemLayout = {
+    wrapperCol: {
+        xs: {
+            span: 24,
+            offset: 0,
+        },
+        sm: {
+            span: 16,
+            offset: 8,
+        },
+    },
+};
 
 export const LoginForm = () => {
     const [isNeedToSignUp, setIsNeedToSignUp] = useState(false);
@@ -24,17 +29,10 @@ export const LoginForm = () => {
     const onFinish: any = async ({ login, password }) => {
         let res;
         try {
-            if (!isNeedToSignUp) {
-                res = await Axios.post('/api/login', {
-                    login,
-                    password,
-                });
-            } else {
-                res = await Axios.post('/api/createUser', {
-                    login,
-                    password,
-                });
-            }
+            res = await Axios.post('/api/login', {
+                login,
+                password,
+            });
 
             writeStorage('auth_hawkins_app', res.data?.token);
             console.log(res);
@@ -52,7 +50,9 @@ export const LoginForm = () => {
         console.log('Failed:', errorInfo);
     };
 
-    return (
+    return isNeedToSignUp ? (
+        <SignUpForm back={() => setIsNeedToSignUp(false)} />
+    ) : (
         <Form
             {...layout}
             name="basic"
@@ -82,55 +82,30 @@ export const LoginForm = () => {
                 <Input.Password />
             </Form.Item>
 
-            {isNeedToSignUp && (
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                        ({ getFieldValue }) => ({
-                            validator(rule, value) {
-                                if (
-                                    !value ||
-                                    getFieldValue('password') === value
-                                ) {
-                                    return Promise.resolve();
-                                }
-                                return Promise.reject(
-                                    'The two passwords that you entered do not match!'
-                                );
-                            },
-                        }),
-                    ]}
-                >
-                    <Input.Password />
-                </Form.Item>
-            )}
-
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+            <Form.Item
+                {...tailFormItemLayout}
+                name="remember"
+                valuePropName="checked"
+            >
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item {...tailLayout}>
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{ width: '100%', marginBottom: 10 }}
-                >
-                    {isNeedToSignUp ? 'Create new user' : 'Login'}
+            <Form.Item {...tailFormItemLayout}>
+                <Button style={{ width: 200 }} type="primary" htmlType="submit">
+                    Login
                 </Button>
-                Or{' '}
-                <CreateAcc
-                    onClick={() => {
+            </Form.Item>
+
+            <Form.Item {...tailFormItemLayout}>
+                <Button
+                    type="default"
+                    onClick={(e) => {
+                        e.preventDefault();
                         setIsNeedToSignUp(true);
-                        form.resetFields();
                     }}
                 >
-                    register now!
-                </CreateAcc>
+                    or create a new account
+                </Button>
             </Form.Item>
         </Form>
     );
