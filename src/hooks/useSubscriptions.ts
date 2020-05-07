@@ -18,7 +18,9 @@ export const useSubscriptions = (token) => {
     }, []);
 
     const subscribe = useCallback(async () => {
-        isSubscribed ? unsubscribePush(token) : subscribePush(token);
+        isSubscribed
+            ? await unsubscribePush(token)
+            : await subscribePush(token);
         setIsSubscribed(!isSubscribed);
     }, [isSubscribed, token]);
 

@@ -56,12 +56,6 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
         );
     } catch (err) {
         console.error(err);
-        console.log(
-            'expected something like: \n',
-            notificationIllustration,
-            '\nbut received: \n',
-            event.data.text()
-        );
     }
 });
 
@@ -71,4 +65,12 @@ serviceWorkerScope.addEventListener('message', function skipWaiting(event) {
 
 serviceWorkerScope.addEventListener('install', () => {
     serviceWorkerScope.skipWaiting();
+});
+
+serviceWorkerScope.addEventListener('pushsubscriptionchange', function (event) {
+    event.waitUntil(
+        serviceWorkerScope.registration.pushManager.subscribe({
+            userVisibleOnly: true,
+        })
+    );
 });

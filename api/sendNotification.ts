@@ -24,13 +24,13 @@ module.exports = async (req, res) => {
         const subscriptions: any = await client.query(
             q.Map(
                 q.Paginate(
-                    q.Match(q.Index('subscriptions_by_user_id'), userId)
+                    q.Match(q.Index('user-subscriptions-by-userid'), userId)
                 ),
                 (ref) => q.Get(ref)
             )
         );
 
-        subscriptions.forEach(sendNotification);
+        subscriptions?.data?.forEach(sendNotification);
         res.status(201);
     } catch (e) {
         // something went wrong
