@@ -30,9 +30,7 @@ module.exports = async (req, res) => {
             )
         );
 
-        subscriptions?.data?.forEach((d) =>
-            sendNotification((d) => data.subscription)
-        );
+        subscriptions?.data?.forEach((d) => sendNotification(d.subscription));
         res.status(201);
     } catch (e) {
         // something went wrong
