@@ -53,8 +53,8 @@ export const schedulePushNotification = async () => {
 };
 
 export const requestToSendPush = async (token) => {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
+    const registration = await navigator.serviceWorker.getRegistration();
+    const subscription = await registration?.pushManager.getSubscription();
 
     await Axios.post('/api/sendNotification', {
         subscription,
