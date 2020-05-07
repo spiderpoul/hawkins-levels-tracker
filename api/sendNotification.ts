@@ -25,13 +25,15 @@ module.exports = async (req, res) => {
         );
 
         if (subscriptions?.data?.length) {
-            await Promise.all(
+            const res = await Promise.all(
                 subscriptions?.data?.map((d) =>
                     sendNotification(d.data.subscription)
                 )
             );
+
+            console.log(res);
         }
-        res.status(200);
+        res.status(200).json({});
     } catch (e) {
         // something went wrong
         res.status(500).json({ error: e.message });
