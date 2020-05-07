@@ -52,20 +52,6 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
                 }
             )
         );
-
-        event.waitUntil(
-            serviceWorkerScope.registration.showNotification(
-                `We will notify you in one hour`,
-                {
-                    tag: Math.random().toString().substr(2),
-                    body: `It will take a few seconds`,
-                    icon: options.icon,
-                    showTrigger:
-                        TimestampTrigger &&
-                        new TimestampTrigger(Date.now() + 3600 * 1000),
-                }
-            )
-        );
     } catch (err) {
         console.error(err);
     }
