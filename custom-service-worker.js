@@ -55,7 +55,7 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
 
         event.waitUntil(
             serviceWorkerScope.registration.showNotification(
-                `We will notify you in one hour`,
+                `How are you now? Please fille the form`,
                 {
                     tag: Math.random().toString().substr(2),
                     body: `It will take a few seconds`,
@@ -75,6 +75,11 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
 
 serviceWorkerScope.addEventListener('message', function skipWaiting(event) {
     if (event.data === 'skipWaiting') serviceWorkerScope.skipWaiting();
+});
+
+serviceWorkerScope.addEventListener('install', function (event) {
+    // The promise that skipWaiting() returns can be safely ignored.
+    serviceWorkerScope.skipWaiting();
 });
 
 serviceWorkerScope.addEventListener('pushsubscriptionchange', function (event) {

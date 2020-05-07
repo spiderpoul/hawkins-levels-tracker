@@ -1,4 +1,5 @@
 import { verifyToken, client, q } from '../client';
+import allSettled from 'promise.allsettled';
 import webPush from 'web-push';
 
 webPush.setVapidDetails(
@@ -25,21 +26,19 @@ module.exports = async (req, res) => {
         );
 
         if (subscriptions?.data?.length) {
-            await Promise.all(
+            const res = await allSettled(
                 subscriptions?.data?.map((d) =>
                     sendNotification(d.data.subscription)
                 )
             );
 
-            setTimeout(
-                () =>
-                    Promise.all(
-                        subscriptions?.data?.map((d) =>
-                            sendNotification(d.data.subscription)
-                        )
-                    ),
-                3600 * 1000
-            );
+            res.filter((x) => x.status === 'rejected').forEach(async (x) => {
+                await client.query(
+                    q.Delete(
+                        q.Ref(q.Index('user-subscriptions-by-userid'), userId)
+                    )
+                );
+            });
         }
         res.status(200).json({});
     } catch (e) {

@@ -6,9 +6,7 @@ module.exports = async (req, res) => {
             user: { userId },
         } = verifyToken(req.body?.token);
         const dbs: any = await client.query(
-            q.Delete(
-                q.Ref(q.Collection('user-subscriptions-by-userid'), userId)
-            )
+            q.Delete(q.Ref(q.Index('user-subscriptions-by-userid'), userId))
         );
         // ok
         res.status(200).json(dbs?.data);

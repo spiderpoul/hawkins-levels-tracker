@@ -33,7 +33,6 @@ export const subscribePush = async (token) => {
         userVisibleOnly: true,
         applicationServerKey: convertedVapidKey,
     });
-    console.log(registration, subscription);
     await Axios.post('/api/subscribePush', {
         subscription,
         token,
