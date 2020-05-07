@@ -80,10 +80,6 @@ serviceWorkerScope.addEventListener('message', function skipWaiting(event) {
     if (event.data === 'skipWaiting') serviceWorkerScope.skipWaiting();
 });
 
-serviceWorkerScope.addEventListener('install', () => {
-    serviceWorkerScope.skipWaiting();
-});
-
 serviceWorkerScope.addEventListener('pushsubscriptionchange', function (event) {
     event.waitUntil(
         serviceWorkerScope.registration.pushManager.subscribe({
