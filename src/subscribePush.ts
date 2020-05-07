@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { requestPermissionsNotifications } from './utils';
 
 function urlBase64ToUint8Array(base64String) {
     var padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -58,4 +57,30 @@ export const isUserSubscribed = async () => {
     const registration = await navigator.serviceWorker.getRegistration();
     const subscription = await registration?.pushManager.getSubscription();
     return Boolean(subscription);
+};
+
+export const requestPermissionsNotifications = async () => {
+    let { state } = await navigator.permissions.query({
+        name: 'notifications',
+    });
+    if (state === 'prompt') {
+        await Notification.requestPermission();
+    }
+    state = (await navigator.permissions.query({ name: 'notifications' }))
+        .state;
+    if (state !== 'granted') {
+        return alert(
+            'You need to grant notifications permission for this demo to work.'
+        );
+    }
+};
+
+export const requestToSendPush = async (token) => {
+    const registration = await navigator.serviceWorker.getRegistration();
+    const subscription = await registration?.pushManager.getSubscription();
+
+    await Axios.post('/api/sendNotification', {
+        subscription,
+        token,
+    });
 };

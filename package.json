@@ -36,7 +36,7 @@
         "web-push": "^3.4.3"
     },
     "scripts": {
-        "dev": "react-scripts start && cra-append-sw --mode dev ./custom-service-worker.js",
+        "dev": "HTTPS=true react-scripts start && cra-append-sw --mode dev ./custom-service-worker.js",
         "build": "react-scripts build && cra-append-sw ./custom-service-worker.js",
         "test": "react-scripts test",
         "eject": "react-scripts eject"

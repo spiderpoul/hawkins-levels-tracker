@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { Button, Form, Skeleton } from 'antd';
 
 import { LEVELS_TYPES } from './models';
-import {
-    schedulePushNotification,
-    updateRecord,
-    requestToSendPush,
-} from './utils';
+import { updateRecord } from './utils';
 import { useLevels } from './hooks/useLevels';
 import { useUser } from './hooks/useUser';
 import { SelectLevel } from './SelectLevel';
 import { SelectTask } from './SelectTask';
+import { requestToSendPush } from './subscribePush';
 
 export function FormComponent() {
     const [level, setLevel] = useState(LEVELS_TYPES.Peace);
@@ -40,7 +37,6 @@ export function FormComponent() {
                             url: '/api/add',
                         });
                         revalidate();
-                        schedulePushNotification();
                         setLoading(false);
                         await requestToSendPush(token);
                     }}
