@@ -48,7 +48,7 @@ serviceWorkerScope.addEventListener('push', function showPushNotification(
         const TimestampTrigger = window.TimestampTrigger;
 
         event.waitUntil(
-            serviceWorkerScope.registration?.showNotification(
+            serviceWorkerScope.registration.showNotification(
                 `We will notify you in one hour`,
                 {
                     tag: Math.random().toString().substr(2),
