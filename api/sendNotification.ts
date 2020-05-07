@@ -7,13 +7,7 @@ webPush.setVapidDetails(
     process.env.VAPID_PRIVATE_KEY
 );
 function sendNotification(subscription) {
-    webPush.sendNotification(subscription).catch(function () {
-        console.log(
-            'ERROR in sending Notification, endpoint removed ' +
-                subscription.endpoint
-        );
-        // delete subscriptions[subscription.endpoint];
-    });
+    return webPush.sendNotification(subscription);
 }
 
 module.exports = async (req, res) => {
@@ -30,11 +24,14 @@ module.exports = async (req, res) => {
             )
         );
 
-        console.log(subscriptions?.data);
-        subscriptions?.data?.forEach((d) =>
-            sendNotification(d.data.subscription)
-        );
-        res.status(201);
+        if (subscriptions?.data?.length) {
+            await Promise.all(
+                subscriptions?.data?.map((d) =>
+                    sendNotification(d.data.subscription)
+                )
+            );
+        }
+        res.status(200);
     } catch (e) {
         // something went wrong
         res.status(500).json({ error: e.message });
