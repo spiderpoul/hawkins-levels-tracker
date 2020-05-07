@@ -1,5 +1,4 @@
 import { verifyToken, client, q } from '../client';
-import allSettled from 'promise.allsettled';
 import webPush from 'web-push';
 
 webPush.setVapidDetails(
@@ -9,6 +8,17 @@ webPush.setVapidDetails(
 );
 function sendNotification(subscription) {
     return webPush.sendNotification(subscription);
+}
+
+function reflect(promise) {
+    return promise.then(
+        (v) => {
+            return { status: 'fulfilled', value: v };
+        },
+        (error) => {
+            return { status: 'rejected', reason: error };
+        }
+    );
 }
 
 module.exports = async (req, res) => {
@@ -26,19 +36,24 @@ module.exports = async (req, res) => {
         );
 
         if (subscriptions?.data?.length) {
-            const res = await allSettled(
+            const res = await Promise.all(
                 subscriptions?.data?.map((d) =>
-                    sendNotification(d.data.subscription)
+                    reflect(sendNotification(d.data.subscription))
                 )
             );
 
-            res.filter((x) => x.status === 'rejected').forEach(async (x) => {
-                await client.query(
-                    q.Delete(
-                        q.Ref(q.Index('user-subscriptions-by-userid'), userId)
-                    )
-                );
-            });
+            res.filter((x: any) => x.status === 'rejected').forEach(
+                async (x) => {
+                    await client.query(
+                        q.Delete(
+                            q.Ref(
+                                q.Index('user-subscriptions-by-userid'),
+                                userId
+                            )
+                        )
+                    );
+                }
+            );
         }
         res.status(200).json({});
     } catch (e) {
