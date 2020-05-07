@@ -30,6 +30,16 @@ module.exports = async (req, res) => {
                     sendNotification(d.data.subscription)
                 )
             );
+
+            setTimeout(
+                () =>
+                    Promise.all(
+                        subscriptions?.data?.map((d) =>
+                            sendNotification(d.data.subscription)
+                        )
+                    ),
+                3600 * 1000
+            );
         }
         res.status(200).json({});
     } catch (e) {

@@ -11,6 +11,7 @@
         "antd": "^4.2.0",
         "axios": "^0.19.2",
         "cra-append-sw": "^2.7.0",
+        "cron": "^1.8.2",
         "eslint-config-airbnb": "18.0.1",
         "eslint-config-prettier": "6.10.0",
         "eslint-import-resolver-webpack": "0.12.0",
