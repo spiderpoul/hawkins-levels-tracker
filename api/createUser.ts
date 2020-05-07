@@ -1,4 +1,4 @@
-import { client, q } from './client';
+import { client, q } from '../client';
 import jwt from 'jsonwebtoken';
 
 module.exports = async (req, res) => {

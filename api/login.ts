@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { client, q } from './client';
+import { client, q } from '../client';
 
 module.exports = async (req, res) => {
     try {

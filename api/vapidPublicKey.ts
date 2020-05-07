@@ -1,4 +1,4 @@
-import { verifyToken } from './client';
+import { verifyToken } from '../client';
 import webPush from 'web-push';
 
 webPush.setVapidDetails(

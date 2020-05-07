@@ -1,4 +1,4 @@
-import { client, q, verifyToken } from './client';
+import { client, q, verifyToken } from '../client';
 
 module.exports = async (req, res) => {
     try {
