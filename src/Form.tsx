@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Button, Form, Skeleton } from 'antd';
 
 import { LEVELS_TYPES } from './models';
-import { schedulePushNotification, updateRecord } from './utils';
+import {
+    schedulePushNotification,
+    updateRecord,
+    requestToSendPush,
+} from './utils';
 import { useLevels } from './hooks/useLevels';
 import { useUser } from './hooks/useUser';
 import { SelectLevel } from './SelectLevel';
@@ -38,6 +42,7 @@ export function FormComponent() {
                         revalidate();
                         schedulePushNotification();
                         setLoading(false);
+                        await requestToSendPush(token);
                     }}
                     type="primary"
                 >

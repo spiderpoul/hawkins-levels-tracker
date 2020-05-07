@@ -24,6 +24,7 @@ import logo from './img/logo.png';
 import styled from '@emotion/styled';
 import { useUser } from './hooks/useUser';
 import { useLevels } from './hooks/useLevels';
+import { useSubscriptions } from './hooks/useSubscriptions';
 
 const { Header, Content, Footer } = Layout;
 
@@ -46,6 +47,8 @@ function App() {
     const { token, isAuthorizing, clearToken, user } = useUser();
     const { data: levels, isLoading } = useLevels();
 
+    const { isSubscribed, subscribe } = useSubscriptions(token);
+
     return (
         <Layout className="layout">
             <Header>
@@ -54,6 +57,11 @@ function App() {
                     <Dropdown
                         overlay={
                             <Menu>
+                                <Menu.Item onClick={subscribe}>
+                                    {isSubscribed
+                                        ? 'Unsubscribe from notifications'
+                                        : 'Subscribe to notifications'}
+                                </Menu.Item>
                                 <Menu.Item onClick={clearToken}>
                                     Logout
                                 </Menu.Item>
