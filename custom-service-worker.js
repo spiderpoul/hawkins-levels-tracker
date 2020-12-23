@@ -53,20 +53,19 @@ serviceWorkerScope.addEventListener(
                 )
             );
 
+            const payload = event.data ? event.data.text() : 'no payload';
+
             event.waitUntil(
-                serviceWorkerScope.registration.showNotification(
-                    `How are you now? Please fille the form`,
-                    {
-                        tag: Math.random().toString().substr(2),
-                        body: `It will take a few seconds`,
-                        icon: options.icon,
-                        showTrigger:
-                            serviceWorkerScope.TimestampTrigger &&
-                            new serviceWorkerScope.TimestampTrigger(
-                                Date.now() + 180 * 1000
-                            ),
-                    }
-                )
+                serviceWorkerScope.registration.showNotification(payload, {
+                    tag: Math.random().toString().substr(2),
+                    body: `It will take a few seconds`,
+                    icon: options.icon,
+                    showTrigger:
+                        serviceWorkerScope.TimestampTrigger &&
+                        new serviceWorkerScope.TimestampTrigger(
+                            Date.now() + 180 * 1000
+                        ),
+                })
             );
         } catch (err) {
             console.error(err);

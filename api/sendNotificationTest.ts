@@ -1,4 +1,4 @@
-import { verifyToken, client, q } from '../client';
+import { client, q } from '../client';
 import webPush from 'web-push';
 
 webPush.setVapidDetails(
@@ -6,14 +6,11 @@ webPush.setVapidDetails(
     process.env.VAPID_PUBLIC_KEY,
     process.env.VAPID_PRIVATE_KEY
 );
-function sendNotification(subscription) {
-    return webPush.sendNotification(
-        subscription,
-        `How are you now? Please fille the form`,
-        {
-            TTL: 60,
-        }
-    );
+
+function sendNotification(subscription, payload) {
+    return webPush.sendNotification(subscription, payload, {
+        TTL: 60,
+    });
 }
 
 function reflect(promise) {
@@ -29,9 +26,9 @@ function reflect(promise) {
 
 module.exports = async (req, res) => {
     try {
-        const {
-            user: { userId },
-        } = verifyToken(req.body?.token);
+        const userId = req.body?.userId;
+        const payload = req.body?.payload;
+
         const subscriptions: any = await client.query(
             q.Map(
                 q.Paginate(
@@ -44,7 +41,7 @@ module.exports = async (req, res) => {
         if (subscriptions?.data?.length) {
             const res = await Promise.all(
                 subscriptions?.data?.map((d) =>
-                    reflect(sendNotification(d.data.subscription))
+                    reflect(sendNotification(d.data.subscription, payload))
                 )
             );
 
