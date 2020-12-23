@@ -9,7 +9,7 @@ webPush.setVapidDetails(
 function sendNotification(subscription) {
     return webPush.sendNotification(
         subscription,
-        `How are you now? Please fille the form`,
+        `We will notify you in one hour`,
         {
             TTL: 60,
         }
